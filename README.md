@@ -1,5 +1,4 @@
-dwm - dynamic window manager
-============================
+# dwm - dynamic window manager
 dwm is an extremely fast, small, and dynamic window manager for X.
 
 This is a personal "fork" of dwm. I have a small number of additional features
@@ -11,4 +10,8 @@ patched in:
 * gaplessgrid
 * push
 * pull to master (toggleview)
-* bstack (no bstackhoriz yet)
+* bstack/bstackhoriz
+
+
+### TODO
+* uselessgaps
