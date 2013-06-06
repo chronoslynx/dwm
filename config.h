@@ -56,14 +56,14 @@ static const Layout layouts[] = {
 /* commands */
 static const char *dmenucmd[] = { "dmenu_run", "-fn", font, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbgcolor, "-sf", selfgcolor, NULL };
 static const char *termcmd[]  = { "st", NULL };
-static const char *mpd_tog[]  = { "ncmpcpp toggle", NULL };
-static const char *mpd_stp[]  = { "ncmpcpp stop", NULL };
-static const char *mpd_prv[]  = { "ncmpcpp prev", NULL };
-static const char *mpd_nxt[]  = { "ncmpcpp next", NULL };
+static const char *mpd_tog[]  = { "ncmpcpp", "toggle", NULL };
+static const char *mpd_stp[]  = { "ncmpcpp", "stop", NULL };
+static const char *mpd_prv[]  = { "ncmpcpp", "prev", NULL };
+static const char *mpd_nxt[]  = { "ncmpcpp", "next", NULL };
 
-static const char *vol_mut[]  = { "amixer set Master toggle", NULL };
-static const char *vol_dwn[]  = { "amixer set Master 5%-", NULL };
-static const char *vol_up[]   = { "amixer set Master 5%+", NULL };
+static const char *vol_mut[]  = { "amixer", "set", "Master", "toggle", NULL };
+static const char *vol_dwn[]  = { "amixer", "set", "Master", "5%-", NULL };
+static const char *vol_up[]   = { "amixer", "set", "Master", "5%+", NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
