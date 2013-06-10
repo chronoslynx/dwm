@@ -855,14 +855,20 @@ drawbar(Monitor *m) {
         dc.x = m->ww;
     if((dc.w = dc.x - x) > bh) {
         dc.x = x;
-        if(m->sel) {
+
+        //Short circuit the logic and just draw a blank string.
+        //I can see what window I'm in
+        drawtext(" ", dc.norm, False);
+
+        /*if(m->sel) {
             //col = m == selmon ? dc.sel : dc.norm;
             col = dc.norm;
-            drawtext(m->sel->name, col, False);
+            //drawtext(m->sel->name, col, False);
             drawsquare(m->sel->isfixed, m->sel->isfloating, False, col);
         }
         else
             drawtext(NULL, dc.norm, False);
+        */
     }
     XCopyArea(dpy, dc.drawable, m->barwin, dc.gc, 0, 0, m->ww, bh, 0, 0);
     XSync(dpy, False);
