@@ -299,6 +299,7 @@ static Display *dpy;
 static DC dc;
 static Monitor *mons = NULL, *selmon = NULL;
 static Window root;
+static int globalborder;
 
 /* configuration, allows nested code to access above variables */
 #include "config.h"
@@ -450,7 +451,8 @@ bstack(Monitor *m) {
         return;
     if(n > m->nmaster) {
         mh = m->nmaster ? m->mfact * m->wh : 0;
-        tw = m->ww / (n - m->nmaster);
+        //tw = (m->ww / (n - m->nmaster)) + globalborder/(n - m->nmaster);
+        tw = (m->ww / (n - m->nmaster)) ;
         ty = m->wy + mh;
     } 
     else {
@@ -462,45 +464,61 @@ bstack(Monitor *m) {
         if(i < m->nmaster) {
             w = (m->ww - mx) / (MIN(n, m->nmaster) - i);
             resize(c, m->wx + mx, m->wy, w - (2 * c->bw), mh - (2 * c->bw), False);
-            mx += WIDTH(c);
+            mx += WIDTH(c) + globalborder;
         } 
         else {
+            w = (m->ww - tx) / (n - i);
             h = m->wh - mh;
-            resize(c, tx, ty, tw - (2 * c->bw), h - (2 * c->bw), False);
+            resize(c,
+                    tx,
+                    ty - globalborder,
+                    w - (2 * c->bw),
+                    h - (2 * c->bw) + globalborder,
+                    False);
             if(tw != m->ww)
-                tx += WIDTH(c);
+                tx += WIDTH(c) + globalborder;
         }
     }
 }
 
 static void
 bstackhoriz(Monitor *m) {
-    int w, mh, mx, tx, ty, th;
-    unsigned int i, n;
+    int w, mh, mx, tx, ty, th; unsigned int i, n;
     Client *c;
 
     for(n = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), n++);
     if(n == 0)
         return;
+
     if(n > m->nmaster) {
         mh = m->nmaster ? m->mfact * m->wh : 0;
-        th = (m->wh - mh) / (n - m->nmaster);
-        ty = m->wy + mh;
-    } 
-    else {
+        th = ((m->wh - mh) / (n - m->nmaster)) + globalborder;
+        ty = m->wy + mh - globalborder;
+    } else {  
         th = mh = m->wh;
         ty = m->wy;
     }
+
     for(i = mx = 0, tx = m->wx, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++) {
         if(i < m->nmaster) {
             w = (m->ww - mx) / (MIN(n, m->nmaster) - i);
-            resize(c, m->wx + mx, m->wy, w - (2 * c->bw), mh - (2 * c->bw), False);
-            mx += WIDTH(c);
+            resize(c,
+                   m->wx + mx,
+                   m->wy, w - (2 * c->bw),
+                   mh - (2 * c->bw),
+                   False);
+            mx += WIDTH(c) + globalborder;
         } 
         else {
-            resize(c, tx, ty, m->ww - (2 * c->bw), th - (2 * c->bw), False);
+            resize(c,
+                   tx,
+                   ty,
+                   m->ww - (2 * c->bw),
+                   th - (2 * c->bw),
+                   False);
+
             if(th != m->wh)
-                ty += HEIGHT(c);
+                ty += HEIGHT(c) + globalborder;
         }
     }
 }
@@ -762,11 +780,19 @@ deck(Monitor *m) {
     for(i = my = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++)
         if(i < m->nmaster) {
             h = (m->wh - my) / (MIN(n, m->nmaster) - i);
-            resize(c, m->wx, m->wy + my, mw - (2*c->bw), h - (2*c->bw), False);
-            my += HEIGHT(c);
+            resize(c,
+                    m->wx,
+                    m->wy + my,
+                    mw - (2*c->bw),
+                    h - (2*c->bw), False);
+            my += HEIGHT(c) + globalborder;
         }
         else
-            resize(c, m->wx + mw, m->wy, m->ww - mw - (2*c->bw), m->wh - (2*c->bw), False);
+            resize(c,
+                   m->wx + mw - globalborder,
+                   m->wy, 
+                   m->ww - mw - (2*c->bw) + globalborder,
+                   m->wh - (2*c->bw), False);
 }
 
 void
@@ -856,19 +882,8 @@ drawbar(Monitor *m) {
     if((dc.w = dc.x - x) > bh) {
         dc.x = x;
 
-        //Short circuit the logic and just draw a blank string.
-        //I can see what window I'm in
-        drawtext(" ", dc.norm, False);
+        drawtext(NULL, dc.norm, False);
 
-        /*if(m->sel) {
-            //col = m == selmon ? dc.sel : dc.norm;
-            col = dc.norm;
-            //drawtext(m->sel->name, col, False);
-            drawsquare(m->sel->isfixed, m->sel->isfloating, False, col);
-        }
-        else
-            drawtext(NULL, dc.norm, False);
-        */
     }
     XCopyArea(dpy, dc.drawable, m->barwin, dc.gc, 0, 0, m->ww, bh, 0, 0);
     XSync(dpy, False);
@@ -1511,11 +1526,18 @@ resize(Client *c, int x, int y, int w, int h, Bool interact) {
 void
 resizeclient(Client *c, int x, int y, int w, int h) {
     XWindowChanges wc;
+    if(c->isfloating || selmon->lt[selmon->sellt]->arrange == NULL) {
+        globalborder = 0;
+    } else if (selmon->lt[selmon->sellt]->arrange == monocle) {
+        globalborder = 0 - borderpx;
+    } else {
+        globalborder = gappx;
+    }
 
-    c->oldx = c->x; c->x = wc.x = x;
-    c->oldy = c->y; c->y = wc.y = y;
-    c->oldw = c->w; c->w = wc.width = w;
-    c->oldh = c->h; c->h = wc.height = h;
+    c->oldx = c->x; c->x = wc.x = x + globalborder;
+    c->oldy = c->y; c->y = wc.y = y + globalborder;
+    c->oldw = c->w; c->w = wc.width = w - 2 * globalborder;
+    c->oldh = c->h; c->h = wc.height = h - 2 * globalborder;
     wc.border_width = c->bw;
     XConfigureWindow(dpy, c->win, CWX|CWY|CWWidth|CWHeight|CWBorderWidth, &wc);
     configure(c);
@@ -1898,13 +1920,9 @@ tile(Monitor *m) {
         if(i < m->nmaster) {
             h = (m->wh - my) / (MIN(n, m->nmaster) - i);
             resize(c, m->wx, m->wy + my, mw - (2*c->bw), h - (2*c->bw), False);
-            my += HEIGHT(c);
+            my += HEIGHT(c) + globalborder;
         }
         else {
-            /*h = (m->wh - ty) / (n - i);
-            resize(c, m->wx + mw, m->wy + ty, m->ww - mw - (2*c->bw), h - (2*c->bw), False);
-            ty += HEIGHT(c);
-            */
             smh = m->mh * m->smfact;
             if (!(nexttiled(c->next)))
                 h = (m->wh - ty) / (n - i);
@@ -1914,22 +1932,24 @@ tile(Monitor *m) {
             if (h < minwsz) {
                 c->isfloating = True;
                 XRaiseWindow(dpy, c->win);
-                resize(c, m->mx + (m->mw / 2 - WIDTH(c) / 2),
-                        m->my + (m->mh / 2 - HEIGHT(c) / 2),
-                        m->ww - mw - (2 * c->bw), 
-                        h - (2 * c->bw),
-                        False);
-                ty -= HEIGHT(c);
-            } else {
-                resize(c, m->wx + mw, 
-                       m->wy + ty, 
+                resize(c,
+                       m->mx + (m->mw / 2 - WIDTH(c) / 2),
+                       m->my + (m->mh / 2 - HEIGHT(c) / 2),
                        m->ww - mw - (2 * c->bw), 
                        h - (2 * c->bw),
                        False);
+                ty -= HEIGHT(c);
+            } else {
+                resize(c,
+                       m->wx + mw - globalborder, 
+                       m->wy + ty, 
+                       m->ww - mw - (2 * c->bw) + globalborder, 
+                       h - (2 * c->bw),
+                       False);
                 if (!(nexttiled(c->next)))
-                    ty += HEIGHT(c) + smh;
+                    ty += HEIGHT(c) + smh + globalborder;
                 else
-                    ty += HEIGHT(c);
+                    ty += HEIGHT(c) + globalborder;
             }
         }
 }

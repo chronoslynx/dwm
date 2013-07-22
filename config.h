@@ -14,6 +14,7 @@ static const unsigned int borderpx  = 2;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const Bool showbar           = True;     /* False means no bar */
 static const Bool topbar            = True;     /* False means bottom bar */
+static const unsigned int gappx     = 10;        /* Gap applied around windows */
 
 /* tagging */
 static const char *tags[] = { "web", "code", "term", "mail", "chat", "misc", };
@@ -57,10 +58,10 @@ static const Layout layouts[] = {
 /* commands */
 static const char *dmenucmd[] = { "dmenu_run", "-fn", font, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbgcolor, "-sf", selfgcolor, NULL };
 static const char *termcmd[]  = { "st", NULL };
-static const char *mpd_tog[]  = { "ncmpcpp", "toggle", NULL };
+ static const char *mpd_tog[]  = { "ncmpcpp", "toggle", NULL };
 static const char *mpd_stp[]  = { "ncmpcpp", "stop", NULL };
 static const char *mpd_prv[]  = { "ncmpcpp", "prev", NULL };
-static const char *mpd_nxt[]  = { "ncmpcpp", "next", NULL };
+static const char *mpd_nxt[]  = { "ncmpcpp", "next", NULL }; 
 
 static const char *vol_mut[]  = { "amixer", "set", "Master", "toggle", NULL };
 static const char *vol_dwn[]  = { "amixer", "set", "Master", "5%-", NULL };
@@ -114,6 +115,7 @@ static Key keys[] = {
     { 0,            XF86XK_AudioNext,          spawn,          { .v = mpd_nxt } },
     { 0,            XF86XK_AudioPrev,          spawn,          { .v = mpd_prv } },
     { 0,            XF86XK_AudioStop,          spawn,          { .v = mpd_stp } },
+
 };
 
 /* button definitions */
