@@ -15,3 +15,8 @@
 *.exe
 *.out
 *.app
+
+# Upstream stuff that we don't care about
+.hgtags
+BUGS
+TODO
