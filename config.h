@@ -12,10 +12,9 @@ static const char selfgcolor[]      = "#262626";
 static const unsigned int minwsz    = 50;       /* Minimum size of client's window wrt smfact*/
 static const unsigned int borderpx  = 2;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
-static const unsigned int gappx     = 10;        /* How many pixels should we gap? */
+static const unsigned int gappx     = 10;        /* Gap applied around windows */
 static const Bool showbar           = True;     /* False means no bar */
 static const Bool topbar            = True;     /* False means bottom bar */
-static const unsigned int gappx     = 10;        /* Gap applied around windows */
 
 /* tagging */
 static const char *tags[] = { "web", "code", "term", "mail", "chat", "misc", };
