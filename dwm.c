@@ -197,6 +197,7 @@ static void focus(Client *c);
 static void focusin(XEvent *e);
 static void focusmon(const Arg *arg);
 static void focusstack(const Arg *arg);
+static void gaplessgrid(Monitor *m);
 static XftColor getcolor(const char *colstr);
 static Bool getrootptr(int *x, int *y);
 static long getstate(Window w);
@@ -790,9 +791,10 @@ deck(Monitor *m) {
         else
             resize(c,
                    m->wx + mw - globalborder,
-                   m->wy, 
+                   m->wy,
                    m->ww - mw - (2*c->bw) + globalborder,
-                   m->wh - (2*c->bw), False);
+                   m->wh - (2*c->bw),
+                   False);
 }
 
 void
@@ -883,7 +885,6 @@ drawbar(Monitor *m) {
         dc.x = x;
 
         drawtext(NULL, dc.norm, False);
-
     }
     XCopyArea(dpy, dc.drawable, m->barwin, dc.gc, 0, 0, m->ww, bh, 0, 0);
     XSync(dpy, False);
@@ -1039,6 +1040,43 @@ focusstack(const Arg *arg) {
         focus(c);
         restack(selmon);
     }
+}
+
+void
+gaplessgrid(Monitor *m) {
+	unsigned int n, cols, rows, cn, rn, i, cx, cy, cw, ch;
+	Client *c;
+
+	for(n = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next))
+		n++;
+	if(n == 0)
+		return;
+
+	/* grid dimensions */
+	for(cols = 0; cols <= n/2; cols++)
+		if(cols*cols >= n)
+			break;
+	if(n == 5) /* set layout against the general calculation: not 1:2:2, but 2:3 */
+		cols = 2;
+	rows = n/cols;
+
+	/* window geometries */
+	cw = cols ? m->ww / cols : m->ww;
+	cn = 0; /* current column number */
+	rn = 0; /* current row number */
+	for(i = 0, c = nexttiled(m->clients); c; i++, c = nexttiled(c->next)) {
+		if(i/rows + 1 > cols - n%cols)
+			rows = n/cols + 1;
+		ch = rows ? m->wh / rows : m->wh;
+		cx = m->wx + cn*cw;
+		cy = m->wy + rn*ch;
+		resize(c, cx, cy, cw - 2 * c->bw, ch - 2 * c->bw, False);
+		rn++;
+		if(rn >= rows) {
+			rn = 0;
+			cn++;
+		}
+	}
 }
 
 Atom
@@ -1534,8 +1572,8 @@ resizeclient(Client *c, int x, int y, int w, int h) {
         globalborder = gappx;
     }
 
-    c->oldx = c->x; c->x = wc.x = x + globalborder;
-    c->oldy = c->y; c->y = wc.y = y + globalborder;
+    c->oldx = c->x; c->x = wc.x = x + globalborder ;
+    c->oldy = c->y; c->y = wc.y = y + globalborder ;
     c->oldw = c->w; c->w = wc.width = w - 2 * globalborder;
     c->oldh = c->h; c->h = wc.height = h - 2 * globalborder;
     wc.border_width = c->bw;

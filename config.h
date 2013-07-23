@@ -12,6 +12,7 @@ static const char selfgcolor[]      = "#262626";
 static const unsigned int minwsz    = 50;       /* Minimum size of client's window wrt smfact*/
 static const unsigned int borderpx  = 2;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
+static const unsigned int gappx     = 10;        /* How many pixels should we gap? */
 static const Bool showbar           = True;     /* False means no bar */
 static const Bool topbar            = True;     /* False means bottom bar */
 static const unsigned int gappx     = 10;        /* Gap applied around windows */
@@ -42,6 +43,7 @@ static const Layout layouts[] = {
     { "[B]",      bstack },
     { "[H]",      bstackhoriz },
     { "[D]",      deck },
+    { "[G]",      gaplessgrid},
 };
 
 /* key definitions */
@@ -91,6 +93,7 @@ static Key keys[] = {
     { MODKEY,                       XK_b,      setlayout,      {.v = &layouts[3]} },
     { MODKEY,                       XK_x,      setlayout,      {.v = &layouts[4]} },
     { MODKEY,                       XK_d,      setlayout,      {.v = &layouts[5]} },
+    { MODKEY,                       XK_g,      setlayout,      {.v = &layouts[6]} },
     { MODKEY,                       XK_space,  setlayout,      {0} },
     { MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
     { MODKEY,                       XK_0,      view,           {.ui = ~0 } },
