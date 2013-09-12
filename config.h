@@ -2,12 +2,12 @@
 #include <X11/XF86keysym.h>
 
 /* appearance */
-static const char font[]            = "Source Code Pro 9";
+static const char font[]            = "Source Code Pro Light 9";
 static const char normbordercolor[] = "#262626";
 static const char normbgcolor[]     = "#262626";
-static const char normfgcolor[]     = "#c6c6c6";
-static const char selbordercolor[]  = "#afcce9";
-static const char selbgcolor[]      = "#afcce9";
+static const char normfgcolor[]     = "#e4e4e4";
+static const char selbordercolor[]  = "#e9afcc";
+static const char selbgcolor[]      = "#e9afcc";
 static const char selfgcolor[]      = "#262626";
 static const unsigned int minwsz    = 50;       /* Minimum size of client's window wrt smfact*/
 static const unsigned int borderpx  = 2;        /* border pixel of windows */
@@ -57,8 +57,9 @@ static const Layout layouts[] = {
 
 /* commands */
 static const char *dmenucmd[] = { "dmenu_run", "-fn", font, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbgcolor, "-sf", selfgcolor, NULL };
-static const char *termcmd[]  = { "st", NULL };
- static const char *mpd_tog[]  = { "ncmpcpp", "toggle", NULL };
+//static const char *termcmd[]  = { "st", NULL };
+static const char *termcmd[]  = { "urxvt", NULL };
+static const char *mpd_tog[]  = { "ncmpcpp", "toggle", NULL };
 static const char *mpd_stp[]  = { "ncmpcpp", "stop", NULL };
 static const char *mpd_prv[]  = { "ncmpcpp", "prev", NULL };
 static const char *mpd_nxt[]  = { "ncmpcpp", "next", NULL }; 
@@ -66,6 +67,8 @@ static const char *mpd_nxt[]  = { "ncmpcpp", "next", NULL };
 static const char *vol_mut[]  = { "amixer", "set", "Master", "toggle", NULL };
 static const char *vol_dwn[]  = { "amixer", "set", "Master", "5%-", NULL };
 static const char *vol_up[]   = { "amixer", "set", "Master", "5%+", NULL };
+
+static const char *lock_cmd[]   = { "sxlock", NULL };
 
 static Key keys[] = {
     /* modifier                     key        function        argument */
@@ -115,6 +118,8 @@ static Key keys[] = {
     { 0,            XF86XK_AudioNext,          spawn,          { .v = mpd_nxt } },
     { 0,            XF86XK_AudioPrev,          spawn,          { .v = mpd_prv } },
     { 0,            XF86XK_AudioStop,          spawn,          { .v = mpd_stp } },
+
+    { ControlMask|MODKEY,           XK_space,  spawn,          { .v = lock_cmd } }, 
 
 };
 
