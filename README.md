@@ -11,8 +11,12 @@ patched in:
 * pull to master (toggleview)
 * bstack/bstackhoriz
 * uselessgaps
+* gaplessgrid (with decent support for uselessgaps, but it's not perfect)
+* centerclock
 
 
 ### TODO
-* gaplessgrid
-* uselessgaps for gaplessgrid
+* ~~gaplessgrid~~
+* ~~uselessgaps for gaplessgrid~~
+* Fix for time not getting updated on both monitors simultaneously
+* Fix for statusbar stripping trailing whitespace / move statusbar in from monitor edge
