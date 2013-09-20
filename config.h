@@ -65,6 +65,12 @@ static const char *mpd_stp[]  = { "ncmpcpp", "stop", NULL };
 static const char *mpd_prv[]  = { "ncmpcpp", "prev", NULL };
 static const char *mpd_nxt[]  = { "ncmpcpp", "next", NULL }; 
 
+static const char *ztream_rand[] = { "~/.bin/ztream", "random", NULL };
+static const char *ztream_chng[] = { "~/.bin/ztream", "change", NULL };
+static const char *ztream_last[] = { "~/.bin/ztream", "last", NULL };
+static const char *ztream_stop[] = { "pkill", "mpv", NULL };
+
+
 static const char *vol_mut[]  = { "amixer", "set", "Master", "toggle", NULL };
 static const char *vol_dwn[]  = { "amixer", "set", "Master", "5%-", NULL };
 static const char *vol_up[]   = { "amixer", "set", "Master", "5%+", NULL };
@@ -123,6 +129,10 @@ static Key keys[] = {
     { 0,            XF86XK_AudioStop,          spawn,          { .v = mpd_stp } },
 
     { ControlMask|MODKEY,           XK_space,  spawn,          { .v = lock_cmd } }, 
+    { ShiftMask,    XF86XK_AudioPlay,          spawn,          { .v = ztream_last } },
+    { ShiftMask,    XF86XK_AudioStop,          spawn,          { .v = ztream_stop } },
+    { ShiftMask,    XF86XK_AudioStop,          spawn,          { .v = ztream_chng } },
+    { ShiftMask,    XF86XK_AudioStop,          spawn,          { .v = ztream_rand } },
 
 };
 
