@@ -15,6 +15,7 @@ static const unsigned int snap      = 32;       /* snap pixel */
 static const Bool showbar           = True;     /* False means no bar */
 static const Bool topbar            = True;     /* False means bottom bar */
 static const unsigned int gappx     = 10;        /* Gap applied around windows */
+static const char clock_fmt[]       = "%m/%d/%y @ %I:%M %p";
 
 /* tagging */
 static const char *tags[] = { "web", "code", "term", "mail", "chat", "misc", };
@@ -142,7 +143,7 @@ static Button buttons[] = {
     /* click                event mask      button          function        argument */
     { ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
     { ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
-    { ClkWinTitle,          0,              Button2,        zoom,           {0} },
+    { ClkClock,             0,              Button2,        zoom,           {0} },
     { ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
     { ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
     { ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
