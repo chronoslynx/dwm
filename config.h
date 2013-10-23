@@ -1,6 +1,10 @@
 /* See LICENSE file for copyright and license details. */
 #include <X11/XF86keysym.h>
 
+#define MAX_TAGLEN 16
+#define MONS_TAGGED 2
+#define TAGMON(mon) (mon->num < MONS_TAGGED ? mon->num : MONS_TAGGED-1)
+
 /* appearance */
 static const char font[]            = "Source Code Pro Light 9";
 static const char normbordercolor[] = "#262626";
@@ -18,7 +22,12 @@ static const unsigned int gappx     = 10;        /* Gap applied around windows *
 static const char clock_fmt[]       = "%m/%d/%y @ %I:%M %p";
 
 /* tagging */
-static const char *tags[] = { "web", "code", "term", "mail", "chat", "misc", };
+static char tags[][MONS_TAGGED][MAX_TAGLEN] = {
+    { "web",  "code" },
+    { "term", "term2" },
+    { "mail", "chat" },
+    { "misc", "misc2" },
+};
 
 static const Rule rules[] = {
     /* xprop(1):

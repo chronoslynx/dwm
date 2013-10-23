@@ -543,7 +543,7 @@ buttonpress(XEvent *e) {
     if(ev->window == selmon->barwin) {
         i = x = 0;
         do
-            x += TEXTW(tags[i]);
+            x += TEXTW(tags[i][TAGMON(selmon)]);
         while(ev->x >= x && ++i < LENGTH(tags));
         if(i < LENGTH(tags)) {
             click = ClkTagBar;
@@ -858,9 +858,9 @@ drawbar(Monitor *m) {
     }
     dc.x = 0;
     for(i = 0; i < LENGTH(tags); i++) {
-        dc.w = TEXTW(tags[i]);
+        dc.w = TEXTW(tags[i][TAGMON(m)]);
         col = m->tagset[m->seltags] & 1 << i ? dc.sel : dc.norm;
-        drawtext(tags[i], col, urg & 1 << i);
+        drawtext(tags[i][TAGMON(m)], col, urg & 1 << i);
         col = dc.sel;
         //drawsquare(m == selmon && selmon->sel && selmon->sel->tags & 1 << i,
         //           occ & 1 << i, urg & 1 << i, col);
