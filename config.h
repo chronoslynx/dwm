@@ -6,7 +6,7 @@
 #define TAGMON(mon) (mon->num < MONS_TAGGED ? mon->num : MONS_TAGGED-1)
 
 /* appearance */
-static const char font[]            = "Source Code Pro Light 9";
+static const char font[]            = "monoOne 8";
 static const char normbordercolor[] = "#262626";
 static const char normbgcolor[]     = "#262626";
 static const char normfgcolor[]     = "#e4e4e4";
@@ -35,7 +35,11 @@ static const Rule rules[] = {
      *  WM_NAME(STRING) = title
      */
     /* class      instance    title       tags mask     isfloating   monitor */
-    { "Gimp",     NULL,       NULL,       0,            True,        -1 },
+    { "Firefox",  NULL,       NULL,       1,            False,        0 },
+    { "URxvt",    "chat",     NULL,       1<<4,         False,        1 },
+    { "URxvt",    "mail",     NULL,       1<<3,         False,        0 },
+    { "URxvt",    NULL,       NULL,       1<<1,         False,       -1 },
+    { "Gvim",     NULL,       NULL,       1<<1,         False,        1 },
 };
 
 /* layout(s) */
