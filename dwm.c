@@ -863,8 +863,6 @@ drawbar(Monitor *m) {
         col = m->tagset[m->seltags] & 1 << i ? dc.sel : dc.norm;
         drawtext(tags[i][TAGMON(m)], col, urg & 1 << i);
         col = dc.sel;
-        //drawsquare(m == selmon && selmon->sel && selmon->sel->tags & 1 << i,
-        //           occ & 1 << i, urg & 1 << i, col);
         drawsquare(m == selmon && selmon->sel && selmon->sel->tags & 1 << i,
                    occ & 1 << i, !(m->tagset[m->seltags] & 1 << i), col);
         dc.x += dc.w;

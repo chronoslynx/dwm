@@ -77,7 +77,7 @@ static const char *termcmd[]  = { "urxvt", NULL };
 static const char *mpd_tog[]  = { "ncmpcpp", "toggle", NULL };
 static const char *mpd_stp[]  = { "ncmpcpp", "stop", NULL };
 static const char *mpd_prv[]  = { "ncmpcpp", "prev", NULL };
-static const char *mpd_nxt[]  = { "ncmpcpp", "next", NULL }; 
+static const char *mpd_nxt[]  = { "ncmpcpp", "next", NULL };
 
 static const char *ztream_rand[] = { "~/.bin/ztream", "random", NULL };
 static const char *ztream_chng[] = { "~/.bin/ztream", "change", NULL };
@@ -143,7 +143,7 @@ static Key keys[] = {
     { 0,            XF86XK_AudioPrev,          spawn,          { .v = mpd_prv } },
     { 0,            XF86XK_AudioStop,          spawn,          { .v = mpd_stp } },
 
-    { ControlMask|MODKEY,           XK_space,  spawn,          { .v = lock_cmd } }, 
+    { ControlMask|MODKEY,           XK_space,  spawn,          { .v = lock_cmd } },
     { ShiftMask,    XF86XK_AudioPlay,          spawn,          { .v = ztream_last } },
     { ShiftMask,    XF86XK_AudioStop,          spawn,          { .v = ztream_stop } },
     { ShiftMask,    XF86XK_AudioStop,          spawn,          { .v = ztream_chng } },
