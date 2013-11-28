@@ -1,8 +1,12 @@
 /* See LICENSE file for copyright and license details. */
 #include <X11/XF86keysym.h>
 
+#define MAX_TAGLEN 16
+#define MONS_TAGGED 2
+#define TAGMON(mon) (mon->num < MONS_TAGGED ? mon->num : MONS_TAGGED-1)
+
 /* appearance */
-static const char font[]            = "monoOne 9";
+static const char font[]            = "monoOne 8";
 static const char normbordercolor[] = "#181512";
 static const char normbgcolor[]     = "#181512";
 static const char normfgcolor[]     = "#857B52";
@@ -18,7 +22,12 @@ static const unsigned int gappx     = 10;        /* Gap applied around windows *
 static const char clock_fmt[]       = "%m/%d/%y @ %I:%M %p";
 
 /* tagging */
-static const char *tags[] = { "web", "code", "term", "mail", "chat", "misc", };
+static char tags[][MONS_TAGGED][MAX_TAGLEN] = {
+    { "web",  "code" },
+    { "term", "term" },
+    { "mail", "chat" },
+    { "misc", "music" },
+};
 
 static const Rule rules[] = {
     /* xprop(1):
@@ -26,7 +35,11 @@ static const Rule rules[] = {
      *  WM_NAME(STRING) = title
      */
     /* class      instance    title       tags mask     isfloating   monitor */
-    { "Gimp",     NULL,       NULL,       0,            True,        -1 },
+    { "Firefox",  NULL,       NULL,       1,            False,        0 },
+    { "URxvt",    "chat",     NULL,       1<<4,         False,        1 },
+    { "URxvt",    "mail",     NULL,       1<<3,         False,        0 },
+    { "URxvt",    NULL,       NULL,       1<<1,         False,       -1 },
+    { "Gvim",     NULL,       NULL,       1,            False,        1 },
 };
 
 /* layout(s) */
@@ -64,7 +77,7 @@ static const char *termcmd[]  = { "urxvt", NULL };
 static const char *mpd_tog[]  = { "ncmpcpp", "toggle", NULL };
 static const char *mpd_stp[]  = { "ncmpcpp", "stop", NULL };
 static const char *mpd_prv[]  = { "ncmpcpp", "prev", NULL };
-static const char *mpd_nxt[]  = { "ncmpcpp", "next", NULL }; 
+static const char *mpd_nxt[]  = { "ncmpcpp", "next", NULL };
 
 static const char *ztream_rand[] = { "~/.bin/ztream", "random", NULL };
 static const char *ztream_chng[] = { "~/.bin/ztream", "change", NULL };
@@ -111,6 +124,7 @@ static Key keys[] = {
     { MODKEY,                       XK_period, focusmon,       {.i = +1 } },
     { MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
     { MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
+    { MODKEY,                       XK_n,      nametag,        {0} },
     TAGKEYS(                        XK_1,                      0)
     TAGKEYS(                        XK_2,                      1)
     TAGKEYS(                        XK_3,                      2)
@@ -128,7 +142,7 @@ static Key keys[] = {
     { 0,            XF86XK_AudioPrev,          spawn,          { .v = mpd_prv } },
     { 0,            XF86XK_AudioStop,          spawn,          { .v = mpd_stp } },
 
-    { ControlMask|MODKEY,           XK_space,  spawn,          { .v = lock_cmd } }, 
+    { ControlMask|MODKEY,           XK_space,  spawn,          { .v = lock_cmd } },
     { ShiftMask,    XF86XK_AudioPlay,          spawn,          { .v = ztream_last } },
     { ShiftMask,    XF86XK_AudioStop,          spawn,          { .v = ztream_stop } },
     { ShiftMask,    XF86XK_AudioStop,          spawn,          { .v = ztream_chng } },
