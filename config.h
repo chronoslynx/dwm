@@ -2,19 +2,20 @@
 #include <X11/XF86keysym.h>
 
 /* appearance */
-static const char font[]            = "Source Code Pro 9";
-static const char normbordercolor[] = "#262626";
-static const char normbgcolor[]     = "#262626";
-static const char normfgcolor[]     = "#c6c6c6";
-static const char selbordercolor[]  = "#afcce9";
-static const char selbgcolor[]      = "#afcce9";
-static const char selfgcolor[]      = "#262626";
+static const char font[]            = "monoOne 9";
+static const char normbordercolor[] = "#181512";
+static const char normbgcolor[]     = "#181512";
+static const char normfgcolor[]     = "#857B52";
+static const char selbordercolor[]  = "#556D70";
+static const char selbgcolor[]      = "#556D70";
+static const char selfgcolor[]      = "#181512";
 static const unsigned int minwsz    = 50;       /* Minimum size of client's window wrt smfact*/
 static const unsigned int borderpx  = 2;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
-static const unsigned int gappx     = 10;        /* Gap applied around windows */
 static const Bool showbar           = True;     /* False means no bar */
 static const Bool topbar            = True;     /* False means bottom bar */
+static const unsigned int gappx     = 10;        /* Gap applied around windows */
+static const char clock_fmt[]       = "%m/%d/%y @ %I:%M %p";
 
 /* tagging */
 static const char *tags[] = { "web", "code", "term", "mail", "chat", "misc", };
@@ -58,15 +59,24 @@ static const Layout layouts[] = {
 
 /* commands */
 static const char *dmenucmd[] = { "dmenu_run", "-fn", font, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbgcolor, "-sf", selfgcolor, NULL };
-static const char *termcmd[]  = { "st", NULL };
- static const char *mpd_tog[]  = { "ncmpcpp", "toggle", NULL };
+//static const char *termcmd[]  = { "st", NULL };
+static const char *termcmd[]  = { "urxvt", NULL };
+static const char *mpd_tog[]  = { "ncmpcpp", "toggle", NULL };
 static const char *mpd_stp[]  = { "ncmpcpp", "stop", NULL };
 static const char *mpd_prv[]  = { "ncmpcpp", "prev", NULL };
 static const char *mpd_nxt[]  = { "ncmpcpp", "next", NULL }; 
 
+static const char *ztream_rand[] = { "~/.bin/ztream", "random", NULL };
+static const char *ztream_chng[] = { "~/.bin/ztream", "change", NULL };
+static const char *ztream_last[] = { "~/.bin/ztream", "last", NULL };
+static const char *ztream_stop[] = { "pkill", "mpv", NULL };
+
+
 static const char *vol_mut[]  = { "amixer", "set", "Master", "toggle", NULL };
 static const char *vol_dwn[]  = { "amixer", "set", "Master", "5%-", NULL };
 static const char *vol_up[]   = { "amixer", "set", "Master", "5%+", NULL };
+
+static const char *lock_cmd[]   = { "sxlock", NULL };
 
 static Key keys[] = {
     /* modifier                     key        function        argument */
@@ -93,7 +103,7 @@ static Key keys[] = {
     { MODKEY,                       XK_x,      setlayout,      {.v = &layouts[4]} },
     { MODKEY,                       XK_d,      setlayout,      {.v = &layouts[5]} },
     { MODKEY,                       XK_g,      setlayout,      {.v = &layouts[6]} },
-    { MODKEY,                       XK_space,  setlayout,      {0} },
+    { MODKEY,                       XK_space,  spawn,           {.v = dmenucmd} },
     { MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
     { MODKEY,                       XK_0,      view,           {.ui = ~0 } },
     { MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
@@ -118,6 +128,12 @@ static Key keys[] = {
     { 0,            XF86XK_AudioPrev,          spawn,          { .v = mpd_prv } },
     { 0,            XF86XK_AudioStop,          spawn,          { .v = mpd_stp } },
 
+    { ControlMask|MODKEY,           XK_space,  spawn,          { .v = lock_cmd } }, 
+    { ShiftMask,    XF86XK_AudioPlay,          spawn,          { .v = ztream_last } },
+    { ShiftMask,    XF86XK_AudioStop,          spawn,          { .v = ztream_stop } },
+    { ShiftMask,    XF86XK_AudioStop,          spawn,          { .v = ztream_chng } },
+    { ShiftMask,    XF86XK_AudioStop,          spawn,          { .v = ztream_rand } },
+
 };
 
 /* button definitions */
@@ -126,7 +142,7 @@ static Button buttons[] = {
     /* click                event mask      button          function        argument */
     { ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
     { ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
-    { ClkWinTitle,          0,              Button2,        zoom,           {0} },
+    { ClkClock,             0,              Button2,        zoom,           {0} },
     { ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
     { ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
     { ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },

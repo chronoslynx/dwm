@@ -33,6 +33,7 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <time.h>
 #include <X11/cursorfont.h>
 #include <X11/keysym.h>
 #include <X11/Xatom.h>
@@ -67,7 +68,7 @@ enum { NetSupported, NetWMName, NetWMState,
        NetWMFullscreen, NetActiveWindow, NetWMWindowType,
        NetWMWindowTypeDialog, NetClientList, NetLast };     /* EWMH atoms */
 enum { WMProtocols, WMDelete, WMState, WMTakeFocus, WMLast }; /* default atoms */
-enum { ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle,
+enum { ClkTagBar, ClkLtSymbol, ClkStatusText, ClkClock,
        ClkClientWin, ClkRootWin, ClkLast };             /* clicks */
 
 typedef union {
@@ -553,7 +554,7 @@ buttonpress(XEvent *e) {
         else if(ev->x > selmon->ww - TEXTW(stext))
             click = ClkStatusText;
         else
-            click = ClkWinTitle;
+            click = ClkClock;
     }
     else if((c = wintoclient(ev->window))) {
         focus(c);
@@ -844,7 +845,9 @@ dirtomon(int dir) {
 
 void
 drawbar(Monitor *m) {
-    int x;
+    int x, clockw;
+    time_t current;
+    char clock[38];
     unsigned int i, occ = 0, urg = 0;
     XftColor *col;
     Client *c;
@@ -883,8 +886,14 @@ drawbar(Monitor *m) {
         dc.x = m->ww;
     if((dc.w = dc.x - x) > bh) {
         dc.x = x;
+        time(&current);
+        strftime(clock, 38, clock_fmt, localtime(&current));
+        clockw = TEXTW(clock);
 
         drawtext(NULL, dc.norm, False);
+        dc.w = MIN(dc.w, clockw);
+        dc.x = MAX(dc.x, (m->mw / 2) - (clockw / 2));
+        drawtext(clock, dc.norm, False);
     }
     XCopyArea(dpy, dc.drawable, m->barwin, dc.gc, 0, 0, m->ww, bh, 0, 0);
     XSync(dpy, False);
@@ -1042,7 +1051,60 @@ focusstack(const Arg *arg) {
     }
 }
 
-void
+/*void
+gaplessgrid(Monitor *m) {
+	unsigned int n, cols, rows, cn, rn, i, cx, cy, cw, ch;
+	Client *c;
+
+	for(n = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next))
+		n++;
+	if(n == 0)
+		return;
+
+	//grid dimensions
+	for(cols = 0; cols <= n/2; cols++)
+		if(cols*cols >= n)
+			break;
+	if(n == 5) //set layout against the general calculation: not 1:2:2, but 2:3
+		cols = 2;
+	rows = n/cols;
+
+	//window geometries
+	cw = cols ? m->ww / cols : m->ww;
+	cn = 0; // current column number
+	rn = 0; // current row number
+	for(i = 0, c = nexttiled(m->clients); c; i++, c = nexttiled(c->next)) {
+		if(i/rows + 1 > cols - n%cols)
+			rows = n/cols + 1;
+		ch = rows ? m->wh / rows : m->wh;
+		cx = m->wx + cn*cw;
+		cy = m->wy + rn*ch;
+		resize(c, cx, cy, cw - 2 * c->bw, ch - 2 * c->bw, False);
+		rn++;
+		if(rn >= rows) {
+			rn = 0;
+			cn++;
+		}
+	}
+}
+*/
+
+Atom
+getatomprop(Client *c, Atom prop) {
+    int di;
+    unsigned long dl;
+    unsigned char *p = NULL;
+    Atom da, atom = None;
+
+    if(XGetWindowProperty(dpy, c->win, prop, 0L, sizeof atom, False, XA_ATOM,
+                          &da, &di, &dl, &dl, &p) == Success && p) {
+        atom = *(Atom *)p;
+        XFree(p);
+    }
+    return atom;
+}
+
+static void
 gaplessgrid(Monitor *m) {
 	unsigned int n, cols, rows, cn, rn, i, cx, cy, cw, ch;
 	Client *c;
@@ -1061,37 +1123,32 @@ gaplessgrid(Monitor *m) {
 	rows = n/cols;
 
 	/* window geometries */
-	cw = cols ? m->ww / cols : m->ww;
 	cn = 0; /* current column number */
 	rn = 0; /* current row number */
 	for(i = 0, c = nexttiled(m->clients); c; i++, c = nexttiled(c->next)) {
+        cw = cols ? m->ww / cols : m->ww;
 		if(i/rows + 1 > cols - n%cols)
 			rows = n/cols + 1;
 		ch = rows ? m->wh / rows : m->wh;
 		cx = m->wx + cn*cw;
 		cy = m->wy + rn*ch;
-		resize(c, cx, cy, cw - 2 * c->bw, ch - 2 * c->bw, False);
+
+        if(cn != 0) {
+            cx -= globalborder;
+            cw += globalborder/cols;
+        }
+
+        if(rn != 0) {
+            cy -= globalborder;
+            ch += globalborder/rows;
+        }
+        resize(c, cx, cy, cw - 2 * c->bw, ch - 2 * c->bw, False);
 		rn++;
 		if(rn >= rows) {
 			rn = 0;
 			cn++;
 		}
 	}
-}
-
-Atom
-getatomprop(Client *c, Atom prop) {
-    int di;
-    unsigned long dl;
-    unsigned char *p = NULL;
-    Atom da, atom = None;
-
-    if(XGetWindowProperty(dpy, c->win, prop, 0L, sizeof atom, False, XA_ATOM,
-                          &da, &di, &dl, &dl, &p) == Success && p) {
-        atom = *(Atom *)p;
-        XFree(p);
-    }
-    return atom;
 }
 
 XftColor
@@ -1529,8 +1586,8 @@ propertynotify(XEvent *e) {
         }
         if(ev->atom == XA_WM_NAME || ev->atom == netatom[NetWMName]) {
             updatetitle(c);
-            if(c == c->mon->sel)
-                drawbar(c->mon);
+            //if(c == c->mon->sel)
+            //    drawbar(c->mon);
         }
         if(ev->atom == netatom[NetWMWindowType])
             updatewindowtype(c);
@@ -2426,7 +2483,7 @@ main(int argc, char *argv[]) {
         die("dwm-"VERSION", © 2006-2012 dwm engineers, see LICENSE for details\n");
     else if(argc != 1)
         die("usage: dwm [-v]\n");
-    if(!setlocale(LC_CTYPE, "") || !XSupportsLocale())
+    if(!setlocale(LC_ALL, "") || !XSupportsLocale())
         fputs("warning: no locale support\n", stderr);
     if(!(dpy = XOpenDisplay(NULL)))
         die("dwm: cannot open display\n");
