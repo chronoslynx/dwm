@@ -70,18 +70,14 @@ static const Layout layouts[] = {
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
 /* commands */
-static const char *dmenucmd[] = { "dmenu_run", "-fn", font, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbgcolor, "-sf", selfgcolor, NULL };
-//static const char *termcmd[]  = { "st", NULL };
+static const char *dmenucmd[] = { "dmenu_run", "-fn", font, "-nb", normbgcolor, 
+    "-nf", normfgcolor, "-sb", selbgcolor, "-sf", selfgcolor, NULL };
 static const char *termcmd[]  = { "urxvt", NULL };
-static const char *mpd_tog[]  = { "ncmpcpp", "toggle", NULL };
-static const char *mpd_stp[]  = { "ncmpcpp", "stop", NULL };
-static const char *mpd_prv[]  = { "ncmpcpp", "prev", NULL };
-static const char *mpd_nxt[]  = { "ncmpcpp", "next", NULL };
+static const char *media_tog[]  = { "/home/bryan/.bin/mediactl", "toggle", NULL };
+static const char *media_stp[]  = { "/home/bryan/.bin/mediactl", "stop", NULL };
+static const char *media_prv[]  = { "/home/bryan/.bin/mediactl", "prev", NULL };
+static const char *media_nxt[]  = { "/home/bryan/.bin/mediactl", "next", NULL };
 
-static const char *ztream_rand[] = { "~/.bin/ztream", "random", NULL };
-static const char *ztream_chng[] = { "~/.bin/ztream", "change", NULL };
-static const char *ztream_last[] = { "~/.bin/ztream", "last", NULL };
-static const char *ztream_stop[] = { "pkill", "mpv", NULL };
 
 
 static const char *vol_mut[]  = { "amixer", "set", "Master", "toggle", NULL };
@@ -137,16 +133,12 @@ static Key keys[] = {
     { 0,            XF86XK_AudioRaiseVolume,   spawn,          { .v = vol_up  } },
     { 0,            XF86XK_AudioMute,          spawn,          { .v = vol_mut } },
 
-    { 0,            XF86XK_AudioPlay,          spawn,          { .v = mpd_tog } },
-    { 0,            XF86XK_AudioNext,          spawn,          { .v = mpd_nxt } },
-    { 0,            XF86XK_AudioPrev,          spawn,          { .v = mpd_prv } },
-    { 0,            XF86XK_AudioStop,          spawn,          { .v = mpd_stp } },
+    { 0,            XF86XK_AudioPlay,          spawn,          { .v = media_tog } },
+    { 0,            XF86XK_AudioNext,          spawn,          { .v = media_nxt } },
+    { 0,            XF86XK_AudioPrev,          spawn,          { .v = media_prv } },
+    { 0,            XF86XK_AudioStop,          spawn,          { .v = media_stp } },
 
     { ControlMask|MODKEY,           XK_space,  spawn,          { .v = lock_cmd } },
-    { ShiftMask,    XF86XK_AudioPlay,          spawn,          { .v = ztream_last } },
-    { ShiftMask,    XF86XK_AudioStop,          spawn,          { .v = ztream_stop } },
-    { ShiftMask,    XF86XK_AudioStop,          spawn,          { .v = ztream_chng } },
-    { ShiftMask,    XF86XK_AudioStop,          spawn,          { .v = ztream_rand } },
 
 };
 
