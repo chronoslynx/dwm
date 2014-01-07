@@ -9,9 +9,9 @@
 static const char font[]            = "monoOne, Icons 8";
 static const char normbordercolor[] = "#181512";
 static const char normbgcolor[]     = "#181512";
-static const char normfgcolor[]     = "#bea492";
-static const char selbordercolor[]  = "#60899E";
-static const char selbgcolor[]      = "#60899E";
+static const char normfgcolor[]     = "#857B52";
+static const char selbordercolor[]  = "#556D70";
+static const char selbgcolor[]      = "#556D70";
 static const char selfgcolor[]      = "#181512";
 static const unsigned int minwsz    = 50;       /* Minimum size of client's window wrt smfact*/
 static const unsigned int borderpx  = 2;        /* border pixel of windows */
@@ -38,7 +38,7 @@ static const Rule rules[] = {
     { "URxvt",    "chat",     NULL,       1<<4,         False,        1 },
     { "URxvt",    "mail",     NULL,       1<<3,         False,        0 },
     { "URxvt",    NULL,       NULL,       1<<1,         False,       -1 },
-    { "Gvim",     NULL,       NULL,       1<<1,         False,        1 },
+    { "Gvim",     NULL,       NULL,       1,            False,        1 },
 };
 
 /* layout(s) */
@@ -55,7 +55,7 @@ static const Layout layouts[] = {
     { "[B]",      bstack },
     { "[H]",      bstackhoriz },
     { "[D]",      deck },
-    { "[G]",      gaplessgrid },
+    { "[G]",      gaplessgrid},
 };
 
 /* key definitions */
@@ -111,7 +111,6 @@ static Key keys[] = {
     { MODKEY,                       XK_x,      setlayout,      {.v = &layouts[4]} },
     { MODKEY,                       XK_d,      setlayout,      {.v = &layouts[5]} },
     { MODKEY,                       XK_g,      setlayout,      {.v = &layouts[6]} },
-    //{ MODKEY,                       XK_space,  setlayout,      {0} },
     { MODKEY,                       XK_space,  spawn,           {.v = dmenucmd} },
     { MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
     { MODKEY,                       XK_0,      view,           {.ui = ~0 } },
