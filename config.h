@@ -6,13 +6,13 @@
 #define TAGMON(mon) (mon->num < MONS_TAGGED ? mon->num : MONS_TAGGED-1)
 
 /* appearance */
-static const char font[]            = "monoOne 8";
-static const char normbordercolor[] = "#262626";
-static const char normbgcolor[]     = "#262626";
-static const char normfgcolor[]     = "#e4e4e4";
-static const char selbordercolor[]  = "#e9afcc";
-static const char selbgcolor[]      = "#e9afcc";
-static const char selfgcolor[]      = "#262626";
+static const char font[]            = "monoOne, Icons 8";
+static const char normbordercolor[] = "#181512";
+static const char normbgcolor[]     = "#181512";
+static const char normfgcolor[]     = "#bea492";
+static const char selbordercolor[]  = "#60899E";
+static const char selbgcolor[]      = "#60899E";
+static const char selfgcolor[]      = "#181512";
 static const unsigned int minwsz    = 50;       /* Minimum size of client's window wrt smfact*/
 static const unsigned int borderpx  = 2;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
@@ -23,10 +23,9 @@ static const char clock_fmt[]       = "%m/%d/%y @ %I:%M %p";
 
 /* tagging */
 static char tags[][MONS_TAGGED][MAX_TAGLEN] = {
-    { "web",  "code" },
-    { "term", "term2" },
-    { "mail", "chat" },
-    { "misc", "misc2" },
+    { " web",   " code" },
+    { " term",  " music" },
+    { " cal",   " chat" },
 };
 
 static const Rule rules[] = {
