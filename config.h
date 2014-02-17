@@ -6,7 +6,7 @@
 #define TAGMON(mon) (mon->num < MONS_TAGGED ? mon->num : MONS_TAGGED-1)
 
 /* appearance */
-static const char font[]            = "monoOne 8";
+static const char font[]            = "PragmataPro for Powerline, Icons 8";
 static const char normbordercolor[] = "#181512";
 static const char normbgcolor[]     = "#181512";
 static const char normfgcolor[]     = "#857B52";
@@ -23,10 +23,11 @@ static const char clock_fmt[]       = "%m/%d/%y @ %I:%M %p";
 
 /* tagging */
 static char tags[][MONS_TAGGED][MAX_TAGLEN] = {
-    { "web",  "code" },
-    { "term", "term" },
-    { "mail", "chat" },
-    { "misc", "music" },
+    { " web",  "code" },
+    { " term", "term" },
+    { " code", "xxx"},
+    { " mail", "chat" },
+    { " misc", "music" },
 };
 
 static const Rule rules[] = {
@@ -89,7 +90,7 @@ static const char *vol_mut[]  = { "amixer", "set", "Master", "toggle", NULL };
 static const char *vol_dwn[]  = { "amixer", "set", "Master", "5%-", NULL };
 static const char *vol_up[]   = { "amixer", "set", "Master", "5%+", NULL };
 
-static const char *lock_cmd[]   = { "sxlock", NULL };
+static const char *lock_cmd[]   = { "slimlock", NULL };
 
 static Key keys[] = {
     /* modifier                     key        function        argument */
