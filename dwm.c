@@ -443,45 +443,37 @@ attachstack(Client *c) {
     c->mon->stack = c;
 }
 
-static void
-bstack(Monitor *m) {
-    int w, h, mh, mx, tx, ty, tw;
-    unsigned int i, n;
-    Client *c;
+static void bstack(Monitor *m) {
+	int w, h, mh, mx, tx, ty, tw;
+	unsigned int i, n;
+	Client *c;
 
-    for(n = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), n++);
-    if(n == 0)
-        return;
-    if(n > m->nmaster) {
-        mh = m->nmaster ? m->mfact * m->wh : 0;
-        //tw = (m->ww / (n - m->nmaster)) + globalborder/(n - m->nmaster);
-        tw = (m->ww / (n - m->nmaster)) ;
-        ty = m->wy + mh;
-    } 
-    else {
-        mh = m->wh;
-        tw = m->ww;
-        ty = m->wy;
-    }
-    for(i = mx = 0, tx = m->wx, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++) {
-        if(i < m->nmaster) {
-            w = (m->ww - mx) / (MIN(n, m->nmaster) - i);
-            resize(c, m->wx + mx, m->wy, w - (2 * c->bw), mh - (2 * c->bw), False);
-            mx += WIDTH(c) + globalborder;
-        } 
-        else {
-            w = (m->ww - tx) / (n - i);
-            h = m->wh - mh;
-            resize(c,
-                    tx,
-                    ty - globalborder,
-                    w - (2 * c->bw),
-                    h - (2 * c->bw) + globalborder,
-                    False);
-            if(tw != m->ww)
-                tx += WIDTH(c) + globalborder;
-        }
-    }
+	for(n = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), n++);
+	if(n == 0)
+		return;
+	if(n > m->nmaster) {
+		mh = m->nmaster ? m->mfact * m->wh : 0;
+		tw = (m->ww + ((n-m->nmaster)-1)*globalborder) / (n - m->nmaster);
+		ty = m->wy + mh - globalborder;
+	} 
+	else {
+		mh = m->wh;
+		tw = m->ww;
+		ty = m->wy;
+	}
+	for(i = mx = 0, tx = m->wx, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++) {
+		if(i < m->nmaster) {
+			w = (m->ww - mx) / (MIN(n, m->nmaster) - i);
+			resize(c, m->wx + mx, m->wy, w - (2 * c->bw), mh - (2 * c->bw), False);
+			mx += WIDTH(c);
+		} 
+		else {
+			h = m->wh - mh + globalborder;
+			resize(c, tx, ty, tw - (2 * c->bw), h - (2 * c->bw), False);
+			if(tw != m->ww)
+				tx += WIDTH(c) + globalborder;
+		}
+	}
 }
 
 static void
@@ -892,7 +884,7 @@ drawbar(Monitor *m) {
         drawtext(NULL, dc.norm, False);
         dc.w = MIN(dc.w, clockw);
         dc.x = MAX(dc.x, (m->mw / 2) - (clockw / 2));
-        drawtext(clock, dc.norm, False);
+        drawtext(clock, dc.sel, True);
     }
     XCopyArea(dpy, dc.drawable, m->barwin, dc.gc, 0, 0, m->ww, bh, 0, 0);
     XSync(dpy, False);
@@ -1911,7 +1903,6 @@ setup(void) {
     sw = DisplayWidth(dpy, screen);
     sh = DisplayHeight(dpy, screen);
     bh = dc.h = dc.font.height + 8;
-    fprintf(stderr, "BH: %d", bh);
     updategeom();
     /* init atoms */
     wmatom[WMProtocols] = XInternAtom(dpy, "WM_PROTOCOLS", False);

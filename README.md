@@ -18,5 +18,6 @@ patched in:
 ### TODO
 * ~~gaplessgrid~~
 * ~~uselessgaps for gaplessgrid~~
-* Fix for time not getting updated on both monitors simultaneously
-* Fix for statusbar stripping trailing whitespace / move statusbar in from monitor edge
+* ~~Fix bstack~~ (Math isn't perfect, but it hovers around the right numbers so I cba to fix it more) 
+* Fix for time not getting updated on both monitors simultaneously (This probably won't be fixed)
+* Fix for statusbar stripping trailing whitespace / move statusbar in from monitor edge (Hacked around in statnot)
