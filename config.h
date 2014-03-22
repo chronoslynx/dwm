@@ -73,7 +73,7 @@ static const Layout layouts[] = {
 /* commands */
 static const char *dmenucmd[] = { "dmenu_run", "-fn", font, "-nb", normbgcolor, 
     "-nf", normfgcolor, "-sb", selbgcolor, "-sf", selfgcolor, NULL };
-static const char *termcmd[]  = { "urxvt", NULL };
+static const char *termcmd[]  = { "st", "-e", "dvtm", NULL };
 static const char *media_tog[]  = { "/home/bryan/.bin/mediactl", "toggle", NULL };
 static const char *media_stp[]  = { "/home/bryan/.bin/mediactl", "stop", NULL };
 static const char *media_prv[]  = { "/home/bryan/.bin/mediactl", "prev", NULL };
@@ -119,6 +119,7 @@ static Key keys[] = {
     { MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
     { MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
     { MODKEY,                       XK_n,      nametag,        {0} },
+    { MODKEY|ControlMask,           XK_b,      banishpointer,  {0} }, 
     TAGKEYS(                        XK_1,                      0)
     TAGKEYS(                        XK_2,                      1)
     TAGKEYS(                        XK_3,                      2)

@@ -171,6 +171,7 @@ static void arrange(Monitor *m);
 static void arrangemon(Monitor *m);
 static void attach(Client *c);
 static void attachstack(Client *c);
+static void banishpointer();
 static void bstack(Monitor *m);
 static void bstackhoriz(Monitor *m);
 static void buttonpress(XEvent *e);
@@ -441,6 +442,12 @@ void
 attachstack(Client *c) {
     c->snext = c->mon->stack;
     c->mon->stack = c;
+}
+
+void
+banishpointer(const Arg *arg) {
+    XWarpPointer(dpy, None, root, 0, 0, 0, 0, selmon->ww, selmon->wh + bh);
+    XFlush(dpy);
 }
 
 static void bstack(Monitor *m) {
