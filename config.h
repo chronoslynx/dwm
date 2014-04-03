@@ -2,20 +2,19 @@
 #include <X11/XF86keysym.h>
 
 #define MAX_TAGLEN 16
-#define MONS_TAGGED 2
+#define MONS_TAGGED 1
 #define TAGMON(mon) (mon->num < MONS_TAGGED ? mon->num : MONS_TAGGED-1)
 
 /* appearance */
-<<<<<<< HEAD
 static const char font[]            = "PragmataPro for Powerline, Icons 8";
-static const char normbordercolor[] = "#181512";
-static const char normbgcolor[]     = "#181512";
-static const char normfgcolor[]     = "#857B52";
-static const char selbordercolor[]  = "#556D70";
-static const char selbgcolor[]      = "#556D70";
-static const char selfgcolor[]      = "#181512";
+static const char normbordercolor[] = "#3F3F3F";
+static const char normbgcolor[]     = "#3F3F3F";
+static const char normfgcolor[]     = "#DCDCCC";
+static const char selbordercolor[]  = "#506070";
+static const char selbgcolor[]      = "#2F2F2F";
+static const char selfgcolor[]      = "#DCDCCC";
 static const unsigned int minwsz    = 50;       /* Minimum size of client's window wrt smfact*/
-static const unsigned int borderpx  = 2;        /* border pixel of windows */
+static const unsigned int borderpx  = 4;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const Bool showbar           = True;     /* False means no bar */
 static const Bool topbar            = True;     /* False means bottom bar */
