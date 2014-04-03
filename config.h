@@ -82,7 +82,7 @@ static const char *vol_mut[]  = { "amixer", "set", "Master", "toggle", NULL };
 static const char *vol_dwn[]  = { "amixer", "set", "Master", "5%-", NULL };
 static const char *vol_up[]   = { "amixer", "set", "Master", "5%+", NULL };
 
-static const char *lock_cmd[]   = { "slimlock", NULL };
+static const char *lock_cmd[]   = { "sxlock", NULL };
 
 static Key keys[] = {
     /* modifier                     key        function        argument */
