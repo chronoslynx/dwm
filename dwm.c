@@ -891,7 +891,7 @@ drawbar(Monitor *m) {
         drawtext(NULL, dc.norm, False);
         dc.w = MIN(dc.w, clockw);
         dc.x = MAX(dc.x, (m->mw / 2) - (clockw / 2));
-        drawtext(clock, dc.sel, True);
+        drawtext(clock, dc.norm, False);
     }
     XCopyArea(dpy, dc.drawable, m->barwin, dc.gc, 0, 0, m->ww, bh, 0, 0);
     XSync(dpy, False);
