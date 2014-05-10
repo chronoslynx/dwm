@@ -2,7 +2,7 @@ dwm - dynamic window manager
 ============================
 dwm is an extremely fast, small, and dynamic window manager for X.
 
-This repository holds my personal fork of dwm. Besides changing colors, commands and rules, I have applied these patches:
+This repository holds my personal "version" of dwm. Besides changing colors, commands and rules, I have applied these patches:
 -draw status on all monitors, update correctly
 -pango
 -bottom stack
@@ -17,7 +17,7 @@ This repository holds my personal fork of dwm. Besides changing colors, commands
 
 Requirements
 ------------
-In order to build dwm you need the Xlib header files.
+In order to build dwm you need the Xlib and Pango header files.
 
 
 Installation
