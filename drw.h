@@ -1,34 +1,42 @@
 /* See LICENSE file for copyright and license details. */
 
+#include <X11/Xft/Xft.h>
+#include <pango/pango.h>
+
 typedef struct {
-	unsigned long rgb;
+	XftColor rgb;
 } Clr;
 
 typedef struct {
-	int ascent;
-	int descent;
-	unsigned int h;
-	XFontSet set;
-	XFontStruct *xfont;
+	Cursor cursor;
+} Cur;
+
+typedef struct {
+	int h;
+	PangoLayout *layout;
 } Fnt;
+
+typedef struct {
+	Clr *fg;
+	Clr *bg;
+	Clr *border;
+} ClrScheme;
 
 typedef struct {
 	unsigned int w, h;
 	Display *dpy;
 	int screen;
-	Window win;
-	Drawable drwable;
+	Window root;
+	Drawable drawable;
+	XftDraw *xftdrawable;
 	GC gc;
-	Clr *fg;
-	Clr *bg;
+	ClrScheme *scheme;
 	Fnt *font;
 } Drw;
 
 typedef struct {
-	unsigned int w;
-	unsigned int h;
-	int xOff;
-	int yOff;
+	int w;
+	int h;
 } Extnts;
 
 /* Drawable abstraction */
@@ -37,25 +45,26 @@ void drw_resize(Drw *drw, unsigned int w, unsigned int h);
 void drw_free(Drw *drw);
 
 /* Fnt abstraction */
-Fnt *drw_font_create(Drw *drw, const char *fontname);
-void drw_font_free(Drw *drw, Fnt *font);
+Fnt *drw_font_create(Display *dpy, int screen, const char *fontname);
+void drw_font_free(Display *dpy, Fnt *font);
+void drw_font_getexts(Fnt *font, const char *text, unsigned int len, Extnts *extnts);
+int drw_font_getexts_width(Fnt *font, const char *text, unsigned int len);
 
-/* Clrour abstraction */
+/* Colour abstraction */
 Clr *drw_clr_create(Drw *drw, const char *clrname);
-void drw_clr_free(Drw *drw, Clr *clr);
+void drw_clr_free(Clr *clr);
+
+/* Cursor abstraction */
+Cur *drw_cur_create(Drw *drw, int shape);
+void drw_cur_free(Drw *drw, Cur *cursor);
 
 /* Drawing context manipulation */
 void drw_setfont(Drw *drw, Fnt *font);
-void drw_setfg(Drw *drw, Clr *clr);
-void drw_setbg(Drw *drw, Clr *clr);
+void drw_setscheme(Drw *drw, ClrScheme *scheme);
 
 /* Drawing functions */
-void drw_rect(Drw *drw, int x, int y, unsigned int w, unsigned int h, Bool filled, Bool empty, Bool invert);
-void drw_text(Drw *drw, int x, int y, unsigned int w, unsigned int h, const char *text, Bool invert);
+void drw_rect(Drw *drw, int x, int y, int filled, int empty);
+void drw_text(Drw *drw, int x, int y, unsigned int w, unsigned int h, const char *text);
 
 /* Map functions */
-void drw_map(Drw *drw, int x, int y, unsigned int w, unsigned int h);
-
-/* Text functions */
-void drw_getexts(Drw *drw, const char *text, unsigned int len, Extnts *extnts);
-
+void drw_map(Drw *drw, Window barwin, int x, int y, unsigned int w, unsigned int h);
