@@ -2,7 +2,7 @@
 #include <X11/XF86keysym.h>
 
 #define MAX_TAGLEN 16
-#define MONS_TAGGED 1
+#define MONS_TAGGED 2
 #define TAGMON(mon) (mon->num < MONS_TAGGED ? mon->num : MONS_TAGGED-1)
 
 /* appearance */
