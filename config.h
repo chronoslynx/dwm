@@ -9,8 +9,7 @@
 	{ MODKEY|ControlMask|ShiftMask, KEY,      toggletag, {.ui = 1 << TAG} },
 
 /* appearance */
-//static const char font[]            = "PragmataPro for Powerline 9, Icons 9";
-static const char font[]            = "PragmataPro for Powerline 9";
+static const char font[]            = "PragmataPro for Powerline 9"; 
 static const char normbordercolor[] = "#3F3F3F";
 static const char normbgcolor[]     = "#3F3F3F";
 static const char normfgcolor[]     = "#DCDCCC";
