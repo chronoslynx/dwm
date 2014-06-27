@@ -110,6 +110,7 @@ typedef struct {
 
 typedef struct {
 	const char *symbol;
+    Bool addgaps;
 	void (*arrange)(Monitor *);
 } Layout;
 
@@ -278,6 +279,7 @@ static Drw *drw;
 static Fnt *fnt;
 static Monitor *mons, *selmon;
 static Window root;
+static int gap;
 
 /* configuration, allows nested code to access above variables */
 #include "config.h"
@@ -465,16 +467,17 @@ bstack(Monitor *m) {
 		mh = m->wh;
 	for(i = mx = tx = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++)
 		if(i < m->nmaster) {
-			w = (m->ww - mx) / (MIN(n, m->nmaster) - i);
+			//w = (m->ww - mx) / (MIN(n, m->nmaster) - i);
 			w = (m->ww - mx) * (c->cfact / mfacts);
 			resize(c, m->wx + mx, m->wy, w - (2*c->bw), mh - (2*c->bw), False);
+			mx += WIDTH(c) + gap;
 			mx += WIDTH(c);
 			mfacts -= c->cfact;
 		}
 		else {
 			w = (m->ww - tx) * (c->cfact / sfacts);
 			resize(c, m->wx + tx, m->wy + mh, w - (2*c->bw), m->wh - mh - (2*c->bw), False);
-			tx += WIDTH(c);
+			tx += WIDTH(c) + gap;
 			sfacts -= c->cfact;
 		}
 }
@@ -533,7 +536,7 @@ checkotherwm(void) {
 void
 cleanup(void) {
 	Arg a = {.ui = ~0};
-	Layout foo = { "", NULL };
+	Layout foo = { "", False, NULL };
 	Monitor *m;
 
 	view(&a);
@@ -827,15 +830,6 @@ drawbar(Monitor *m) {
         x = MAX(x, (m->mw / 2) - (clockw / 2));
         drw_text(drw, x, 0, w, bh, clock);
 
-		/*if(m->sel) {
-			drw_setscheme(drw, m == selmon ? &scheme[SchemeSel] : &scheme[SchemeNorm]);
-			//drw_text(drw, x, 0, w, bh, m->sel->name);
-			//drw_rect(drw, x, 0, m->sel->isfixed, m->sel->isfloating);
-		}
-		else {
-			drw_setscheme(drw, &scheme[SchemeNorm]);
-			drw_text(drw, x, 0, w, bh, NULL);
-		}*/
 	}
 	drw_map(drw, m->barwin, 0, 0, m->ww, bh);
 }
@@ -1414,11 +1408,16 @@ resize(Client *c, int x, int y, int w, int h, Bool interact) {
 void
 resizeclient(Client *c, int x, int y, int w, int h) {
 	XWindowChanges wc;
+    gap = c->isfloating ? 0 : c->mon->lt[c->mon->sellt]->addgaps ? gappx : 0;
+    c->oldx = c->x; c->x = wc.x = x + gap;
+    c->oldy = c->y; c->y = wc.y = y + gap;
+    c->oldw = c->w; c->w = wc.width = w - (gap ? (x + w + (c->bw * 2) == c->mon->mx + c->mon->mw ? 2 : 1) * gap : 0);
+    if(topbar) {
+        c->oldh = c->h; c->h = wc.height = h - (gap ? (y + h + (c->bw * 2) == c->mon->my + c->mon->mh ? 2 : 1) * gap : 0);
+    } else {
+        c->oldh = c->h; c->h = wc.height = h - (gap ? (y + h + bh + (c->bw * 2) == c->mon->my + c->mon->mh ? 2 : 1) * gap : 0);
+    }
 
-	c->oldx = c->x; c->x = wc.x = x;
-	c->oldy = c->y; c->y = wc.y = y;
-	c->oldw = c->w; c->w = wc.width = w;
-	c->oldh = c->h; c->h = wc.height = h;
 	wc.border_width = c->bw;
 	XConfigureWindow(dpy, c->win, CWX|CWY|CWWidth|CWHeight|CWBorderWidth, &wc);
 	configure(c);
@@ -1809,13 +1808,13 @@ tile(Monitor *m) {
 		if(i < m->nmaster) {
 			h = (m->wh - my) * (c->cfact / mfacts);
 			resize(c, m->wx, m->wy + my, mw - (2*c->bw), h - (2*c->bw), False);
-			my += HEIGHT(c);
+			my += HEIGHT(c) + gap;
 			mfacts -= c->cfact;
 		}
 		else {
 			h = (m->wh - ty) * (c->cfact / sfacts);
 			resize(c, m->wx + mw, m->wy + ty, m->ww - mw - (2*c->bw), h - (2*c->bw), False);
-			ty += HEIGHT(c);
+			ty += HEIGHT(c) + gap;
 			sfacts -= c->cfact;
 		}
 }

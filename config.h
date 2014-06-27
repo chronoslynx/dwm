@@ -9,7 +9,7 @@
 	{ MODKEY|ControlMask|ShiftMask, KEY,      toggletag, {.ui = 1 << TAG} },
 
 /* appearance */
-static const char font[]            = "Envy Code R for Powerline 10";
+static const char font[]            = "Envy Code R for Powerline 10"; 
 static const char normbordercolor[] = "#EFEFEF";
 static const char normbgcolor[]     = "#EFEFEF";
 static const char normfgcolor[]     = "#333333";
@@ -30,14 +30,21 @@ static const Bool topbar            = False;
 static const Bool resizehints       = False;
 static const char clock_fmt[]       = "%m/%d/%y @ %I:%M %p";
 
-static const char *tags[] = { "web", "term", "code", "media",  "misc" };
+#define MAX_TAGLEN 16
+#define MONS_TAGGED 3
+#define TAGMON(mon) (mon->num < MONS_TAGGED ? mon->num : MONS_TAGGED-1) 
+static char tags[][MONS_TAGGED][MAX_TAGLEN] = {
+	/* monitor 0, monitor 1, monitor 2... */
+	{ "code",     "web",     "chat"  },
+	{ "terms",    "terms",   "music" },
+};
 
 static const Layout layouts[] = {
-	/* symbol   arrange */
-	{ "T",      tile },
-	{ "B",      bstack },
-	{ "M",      monocle },
-	{ "F",      NULL },
+	/* symbol   gaps?  arrange */
+	{ "T",      True,  tile },
+	{ "B",      True,  bstack },
+	{ "M",      False, monocle },
+	{ "F",      False, NULL },
 };
 
 static const Rule rules[] = {
@@ -46,10 +53,11 @@ static const Rule rules[] = {
      *  WM_NAME(STRING) = title
      */
     /* class     instance title tags mask isfloating attachaside, monitor */
-    { "Firefox", NULL,    NULL, 1,        False,     False,       0 },
-    { "luakit",  NULL,    NULL, 1,        False,     False,       0 },
+    { "Firefox", NULL,    NULL, 1,        False,     False,       1 },
     { "URxvt",   NULL,    NULL, 1<<1,     False,     False,       -1 },
-    { "Gvim",    NULL,    NULL, 1<<2,     False,     False,       1 },
+    { "Gvim",    NULL,    NULL, 1,        False,     False,       0 },
+    { "Spotify", NULL,    NULL, 1<<1,     False,     False,       2 },
+
     { "URxvt",   "mail",  NULL, 1<<3,     False,     False,       0 },
     { "URxvt",   "chat",  NULL, 1<<4,     False,     False,       1 },
 };

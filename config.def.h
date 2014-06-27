@@ -16,7 +16,7 @@ static const Bool topbar            = True;     /* False means bottom bar */
 /* tagging */
 #define MAX_TAGLEN 16
 #define MONS_TAGGED 2
-#define TAGMON(mon) (mon->num < MONS_TAGGED ? mon->num : MONS_TAGGED-1)
+#define TAGMON(mon) (mon->num < MONS_TAGGED ? mon->num : MONS_TAGGED-1) 
 static char tags[][MONS_TAGGED][MAX_TAGLEN] = {
 	/* monitor 0, monitor 1, ... */
 	{ "1",        "1" },
