@@ -14,7 +14,21 @@ static const Bool showbar           = True;     /* False means no bar */
 static const Bool topbar            = True;     /* False means bottom bar */
 
 /* tagging */
-static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+#define MAX_TAGLEN 16
+#define MONS_TAGGED 2
+#define TAGMON(mon) (mon->num < MONS_TAGGED ? mon->num : MONS_TAGGED-1)
+static char tags[][MONS_TAGGED][MAX_TAGLEN] = {
+	/* monitor 0, monitor 1, ... */
+	{ "1",        "1" },
+	{ "2",        "2" },
+	{ "3",        "3" },
+	{ "4",        "4" },
+	{ "5",        "5" },
+	{ "6",        "6" },
+	{ "7",        "7" },
+	{ "8",        "8" },
+	{ "9",        "9" },
+};
 
 static const Rule rules[] = {
 	/* xprop(1):
@@ -79,6 +93,7 @@ static Key keys[] = {
 	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
+	{ MODKEY,                       XK_n,      nametag,        {0} },
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)

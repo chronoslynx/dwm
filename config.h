@@ -9,19 +9,20 @@
 	{ MODKEY|ControlMask|ShiftMask, KEY,      toggletag, {.ui = 1 << TAG} },
 
 /* appearance */
-static const char font[]            = "PragmataPro for Powerline 9"; 
-static const char normbordercolor[] = "#3F3F3F";
-static const char normbgcolor[]     = "#3F3F3F";
-static const char normfgcolor[]     = "#DCDCCC";
-static const char selbordercolor[]  = "#506070";
-static const char selbgcolor[]      = "#2F2F2F";
-static const char selfgcolor[]      = "#DCDCCC";
+static const char font[]            = "Envy Code R for Powerline 10";
+static const char normbordercolor[] = "#EFEFEF";
+static const char normbgcolor[]     = "#EFEFEF";
+static const char normfgcolor[]     = "#333333";
+static const char selbordercolor[]  = "#286A4D";
+static const char selbgcolor[]      = "#8E8E8E";
+static const char selfgcolor[]      = "#333333";
 
-static const char urgbgcolor[]      = "#1D1F21";
-static const char urgfgcolor[]      = "#A54242";
+static const char urgbgcolor[]      = "#Bf2b3D";
+static const char urgfgcolor[]      = "#333333";
 
 static const unsigned int borderpx  = 3;
 static const unsigned int snap      = 24;
+static const unsigned int gappx     = 8;
 static const float mfact            = 0.5;
 static const int nmaster            = 1;
 static const Bool showbar           = True;
@@ -105,6 +106,7 @@ static Key keys[] = {
     { MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
     { MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
     { MODKEY|ControlMask,           XK_b,      banishpointer,  {0} }, 
+    { MODKEY|ShiftMask,             XK_n,      nametag,        {0} },
     TAGKEYS(                        XK_1,                      0)
     TAGKEYS(                        XK_2,                      1)
     TAGKEYS(                        XK_3,                      2)

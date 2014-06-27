@@ -190,6 +190,7 @@ static void maprequest(XEvent *e);
 static void monocle(Monitor *m);
 static void motionnotify(XEvent *e);
 static void movemouse(const Arg *arg);
+static void nametag(const Arg *arg);
 static Client *nexttiled(Client *c);
 static void pop(Client *);
 static Client *prevtiled(Client *c);
@@ -496,7 +497,7 @@ buttonpress(XEvent *e) {
 	if(ev->window == selmon->barwin) {
 		i = x = 0;
 		do
-			x += TEXTW(tags[i]);
+			x += TEXTW(tags[i][TAGMON(m)]);
 		while(ev->x >= x && ++i < LENGTH(tags));
 		if(i < LENGTH(tags)) {
 			click = ClkTagBar;
@@ -785,9 +786,9 @@ drawbar(Monitor *m) {
 
     // draw tags
 	for(i = 0; i < LENGTH(tags); i++) {
-		w = TEXTW(tags[i]);
+		w = TEXTW(tags[i][TAGMON(m)]);
 		drw_setscheme(drw, urg & 1 << i ? &scheme[SchemeUrg] : m->tagset[m->seltags] & 1 << i ? &scheme[SchemeSel] : &scheme[SchemeNorm]);
-		drw_text(drw, x, 0, w, bh, tags[i]);
+		drw_text(drw, x, 0, w, bh, tags[i][TAGMON(m)]);
 		drw_rect(drw, x, 0, m == selmon && selmon->sel && selmon->sel->tags & 1 << i, occ & 1 << i);
 		x += w;
 	}
@@ -800,17 +801,22 @@ drawbar(Monitor *m) {
 	drw_text(drw, x, 0, w, bh, m->ltsymbol);
 	x += w;
 	xx = x;
-	w = TEXTW(stext);
-	x = m->ww - w;
-	if(x < xx) {
-		x = xx;
-		w = m->ww - xx;
-	}
-	drw_text(drw, x, 0, w, bh, stext);
+
+    if (m == selmon) {
+        w = TEXTW(stext);
+        x = m->ww - w;
+        if(x < xx) {
+            x = xx;
+            w = m->ww - xx;
+        }
+        drw_text(drw, x, 0, w, bh, stext);
+    } else {
+        x = m->ww;
+    }
 
     // draw clock 
 	if((w = x - xx) > bh) {
-		x = xx;
+        x = xx;
 
         time(&current);
         strftime(clock, 38, clock_fmt, localtime(&current));
@@ -1269,6 +1275,25 @@ movemouse(const Arg *arg) {
 		selmon = m;
 		focus(NULL);
 	}
+}
+
+void
+nametag(const Arg *arg) {
+	char *cp, name[MAX_TAGLEN];
+	FILE *fp;
+	int i;
+
+	if(!(fp = (FILE*)popen("echo -n | dmenu", "r")))
+		fprintf(stderr, "dwm: Could not popen 'echo -n | dmenu'\n");
+	cp = fgets(name, MAX_TAGLEN, fp);
+	pclose(fp);
+	if(cp == NULL)
+		return;
+
+	for(i = 0; i < LENGTH(tags); i++)
+		if(selmon->tagset[selmon->seltags] & (1 << i))
+			memcpy(tags[i][TAGMON(selmon)], name, MAX_TAGLEN);
+	drawbars();
 }
 
 Client *
