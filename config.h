@@ -9,16 +9,16 @@
 	{ MODKEY|ControlMask|ShiftMask, KEY,      toggletag, {.ui = 1 << TAG} },
 
 /* appearance */
-static const char font[]            = "Envy Code R for Powerline 10"; 
-static const char normbordercolor[] = "#EFEFEF";
-static const char normbgcolor[]     = "#EFEFEF";
-static const char normfgcolor[]     = "#333333";
-static const char selbordercolor[]  = "#286A4D";
-static const char selbgcolor[]      = "#8E8E8E";
-static const char selfgcolor[]      = "#333333";
+static const char font[]            = "Meslo LG M for Powerline 9";
+static const char normbordercolor[] = "#202123";
+static const char normbgcolor[]     = "#202123";
+static const char normfgcolor[]     = "#C5C8C6";
+static const char selbordercolor[]  = "#B294BB";
+static const char selbgcolor[]      = "#B294BB";
+static const char selfgcolor[]      = "#202123";
 
-static const char urgbgcolor[]      = "#Bf2b3D";
-static const char urgfgcolor[]      = "#333333";
+static const char urgbgcolor[]      = "#AE7B00";
+static const char urgfgcolor[]      = "#202123";
 
 static const unsigned int borderpx  = 3;
 static const unsigned int snap      = 24;
