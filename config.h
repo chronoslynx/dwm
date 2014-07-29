@@ -43,6 +43,7 @@ static const Layout layouts[] = {
 	/* symbol   gaps?  arrange */
 	{ "T",      True,  tile },
 	{ "B",      True,  bstack },
+	{ "H",      True,  bstackhoriz },
 	{ "M",      False, monocle },
 	{ "F",      False, NULL },
 };
@@ -67,7 +68,6 @@ static char dmenumon[2] = "0";
 static const char *dmenu[] = { "dmenu_run", "-fn", font, "-nb", normbgcolor, 
     "-nf", normfgcolor, "-sb", selbgcolor, "-sf", selfgcolor, NULL };
 static const char *term[]    = { "urxvtc", NULL };
-//static const char *lock[]    = { "slock", NULL };
 
 static const char *vol_up[]   = { "amixer", "-q", "sset", "Master", "5%+", "unmute", NULL };
 static const char *vol_dwn[] = { "amixer", "-q", "sset", "Master", "5%-", "unmute", NULL };
@@ -100,11 +100,9 @@ static Key keys[] = {
     { MODKEY|ShiftMask,             XK_c,      killclient,     {0} },
     { MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
     { MODKEY,                       XK_b,      setlayout,      {.v = &layouts[1]} },
-    { MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
-    { MODKEY,                       XK_f,      setlayout,      {.v = &layouts[3]} },
-    /*{ MODKEY,                       XK_x,      setlayout,      {.v = &layouts[4]} },
-    { MODKEY,                       XK_d,      setlayout,      {.v = &layouts[5]} },
-    { MODKEY,                       XK_g,      setlayout,      {.v = &layouts[6]} },*/
+    { MODKEY,                       XK_x,      setlayout,      {.v = &layouts[2]} },
+    { MODKEY,                       XK_m,      setlayout,      {.v = &layouts[3]} },
+    { MODKEY,                       XK_f,      setlayout,      {.v = &layouts[4]} },
     { MODKEY,                       XK_space,  spawn,           {.v = dmenu} },
     { MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
     { MODKEY,                       XK_0,      view,           {.ui = ~0 } },

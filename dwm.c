@@ -155,6 +155,7 @@ static void attachaside(Client *c);
 static void attachstack(Client *c);
 static void banishpointer();
 static void bstack(Monitor *m);
+static void bstackhoriz(Monitor *m);
 static void buttonpress(XEvent *e);
 static void checkotherwm(void);
 static void cleanup(void);
@@ -467,11 +468,9 @@ bstack(Monitor *m) {
 		mh = m->wh;
 	for(i = mx = tx = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++)
 		if(i < m->nmaster) {
-			//w = (m->ww - mx) / (MIN(n, m->nmaster) - i);
 			w = (m->ww - mx) * (c->cfact / mfacts);
 			resize(c, m->wx + mx, m->wy, w - (2*c->bw), mh - (2*c->bw), False);
 			mx += WIDTH(c) + gap;
-			mx += WIDTH(c);
 			mfacts -= c->cfact;
 		}
 		else {
@@ -481,6 +480,51 @@ bstack(Monitor *m) {
 			sfacts -= c->cfact;
 		}
 }
+
+static void
+bstackhoriz(Monitor *m) {
+	int h, w, mh, mx, tx, ty, th;
+	unsigned int i, n;
+    float mfacts = 0, sfacts = 0;
+	Client *c;
+
+	for(n = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), n++) {
+		if(n < m->nmaster)
+			mfacts += c->cfact;
+		else
+			sfacts += c->cfact;
+	}
+
+	if(n == 0)
+		return;
+
+	if(n > m->nmaster) {
+		mh = m->nmaster ? m->mfact * m->wh : 0;
+		th = (m->wh - mh) / (n - m->nmaster);
+		ty = m->wy + mh;
+	} 
+	else {
+		th = mh = m->wh;
+		ty = m->wy;
+	}
+
+	for(i = mx = 0, tx = m->wx, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++) {
+		if(i < m->nmaster) {
+			w = (m->ww - mx) * (c->cfact / mfacts);
+			resize(c, m->wx + mx, m->wy, w - (2 * c->bw), mh - (2 * c->bw), False);
+			mx += WIDTH(c) + gap;
+            mfacts -= c->cfact;
+		} 
+		else {
+            h = (m->wh - ty) * (c->cfact / sfacts);
+			resize(c, tx, ty, m->ww - (2 * c->bw), h - (2 * c->bw), False);
+			if(th != m->wh)
+				ty += HEIGHT(c) + gap;
+            sfacts -= c->cfact;
+		}
+	}
+}
+
 
 void
 buttonpress(XEvent *e) {
