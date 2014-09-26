@@ -9,7 +9,7 @@
 	{ MODKEY|ControlMask|ShiftMask, KEY,      toggletag, {.ui = 1 << TAG} },
 
 /* appearance */
-static const char font[]            = "Meslo LG M for Powerline 9";
+static const char font[]            = "Meslo LG M for Powerline 9"; 
 static const char normbordercolor[] = "#202123";
 static const char normbgcolor[]     = "#202123";
 static const char normfgcolor[]     = "#C5C8C6";
@@ -55,19 +55,19 @@ static const Rule rules[] = {
      */
     /* class     instance title tags mask isfloating attachaside, monitor */
     { "Firefox", NULL,    NULL, 1,        False,     False,       1 },
-    { "URxvt",   NULL,    NULL, 1<<1,     False,     False,       -1 },
+    { "st",      NULL,    NULL, 1<<1,     False,     False,       -1 },
     { "Gvim",    NULL,    NULL, 1,        False,     False,       0 },
     { "Spotify", NULL,    NULL, 1<<1,     False,     False,       2 },
 
-    { "URxvt",   "mail",  NULL, 1<<3,     False,     False,       0 },
-    { "URxvt",   "chat",  NULL, 1<<4,     False,     False,       1 },
+    { "st",     "mail",   NULL, 1<<3,     False,     False,       0 },
+    { "st",     "chat",   NULL, 1<<4,     False,     False,       1 },
 };
 
 /* commands */
 static char dmenumon[2] = "0";
 static const char *dmenu[] = { "dmenu_run", "-fn", font, "-nb", normbgcolor, 
     "-nf", normfgcolor, "-sb", selbgcolor, "-sf", selfgcolor, NULL };
-static const char *term[]    = { "urxvtc", NULL };
+static const char *term[]    = { "st", NULL };
 
 static const char *vol_up[]   = { "amixer", "-q", "sset", "Master", "5%+", "unmute", NULL };
 static const char *vol_dwn[] = { "amixer", "-q", "sset", "Master", "5%-", "unmute", NULL };
