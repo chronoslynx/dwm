@@ -9,7 +9,7 @@
 	{ MODKEY|ControlMask|ShiftMask, KEY,      toggletag, {.ui = 1 << TAG} },
 
 /* appearance */
-static const char font[]            = "Meslo LG M for Powerline 9"; 
+static const char font[]            = "TamzenForPowerlineMod 13";
 static const char normbordercolor[] = "#202123";
 static const char normbgcolor[]     = "#202123";
 static const char normfgcolor[]     = "#C5C8C6";
