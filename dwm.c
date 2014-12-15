@@ -1752,9 +1752,12 @@ setup(void) {
 	scheme[SchemeNorm].border = drw_clr_create(drw, normbordercolor);
 	scheme[SchemeNorm].bg = drw_clr_create(drw, normbgcolor);
 	scheme[SchemeNorm].fg = drw_clr_create(drw, normfgcolor);
+
 	scheme[SchemeSel].border = drw_clr_create(drw, selbordercolor);
 	scheme[SchemeSel].bg = drw_clr_create(drw, selbgcolor);
 	scheme[SchemeSel].fg = drw_clr_create(drw, selfgcolor);
+
+	scheme[SchemeUrg].border = drw_clr_create(drw, urgbordercolor);
 	scheme[SchemeUrg].bg = drw_clr_create(drw, urgbgcolor);
 	scheme[SchemeUrg].fg = drw_clr_create(drw, urgfgcolor);
 	/* init bars */

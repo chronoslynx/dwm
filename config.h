@@ -19,6 +19,7 @@ static const char selfgcolor[]      = "#202123";
 
 static const char urgbgcolor[]      = "#AE7B00";
 static const char urgfgcolor[]      = "#202123";
+static const char urgbordercolor[]  = "#202123";
 
 static const unsigned int borderpx  = 3;
 static const unsigned int snap      = 24;
