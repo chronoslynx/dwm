@@ -9,17 +9,17 @@
 	{ MODKEY|ControlMask|ShiftMask, KEY,      toggletag, {.ui = 1 << TAG} },
 
 /* appearance */
-static const char font[]            = "TamzenForPowerlineMod 13";
-static const char normbordercolor[] = "#202123";
-static const char normbgcolor[]     = "#202123";
-static const char normfgcolor[]     = "#C5C8C6";
-static const char selbordercolor[]  = "#B294BB";
-static const char selbgcolor[]      = "#B294BB";
-static const char selfgcolor[]      = "#202123";
+static const char font[]            = "Envy Code R for Powerline 9";
+static const char normbordercolor[] = "#073b42";
+static const char normbgcolor[]     = "#073b42";
+static const char normfgcolor[]     = "#eee8d5";
+static const char selbordercolor[]  = "#b58900";
+static const char selbgcolor[]      = "#b58900";
+static const char selfgcolor[]      = "#073b42";
 
-static const char urgbgcolor[]      = "#AE7B00";
-static const char urgfgcolor[]      = "#202123";
-static const char urgbordercolor[]  = "#202123";
+static const char urgbgcolor[]      = "#db322f";
+static const char urgfgcolor[]      = "#073b42";
+static const char urgbordercolor[]  = "#db322f";
 
 static const unsigned int borderpx  = 3;
 static const unsigned int snap      = 24;
@@ -66,7 +66,10 @@ static const Rule rules[] = {
 
 /* commands */
 static char dmenumon[2] = "0";
-static const char *dmenu[] = { "dmenu_run", "-fn", font, "-nb", normbgcolor, 
+static const char *dmenu[] = { "dmenu_run", "-fn", font, "-nb", normbgcolor,
+    "-nf", normfgcolor, "-sb", selbgcolor, "-sf", selfgcolor, NULL };
+
+static const char *ztream[] = { "/home/bryan/.bin/ztream", "-fn", font, "-nb", normbgcolor,
     "-nf", normfgcolor, "-sb", selbgcolor, "-sf", selfgcolor, NULL };
 static const char *term[]    = { "st", NULL };
 
@@ -127,7 +130,7 @@ static Key keys[] = {
     { 0,            XF86XK_AudioPlay,          spawn,          { .v = media_tog } },
     { 0,            XF86XK_AudioNext,          spawn,          { .v = media_nxt } },
     { 0,            XF86XK_AudioPrev,          spawn,          { .v = media_prv } },
-    { 0,            XF86XK_AudioStop,          spawn,          { .v = media_stp } },
+    { 0,            XF86XK_AudioStop,          spawn,          { .v = ztream } },
 
     { ControlMask|MODKEY,           XK_space,  spawn,          { .v = lock_cmd } },
 
