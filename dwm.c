@@ -502,7 +502,7 @@ bstackhoriz(Monitor *m) {
 		mh = m->nmaster ? m->mfact * m->wh : 0;
 		th = (m->wh - mh) / (n - m->nmaster);
 		ty = m->wy + mh;
-	} 
+	}
 	else {
 		th = mh = m->wh;
 		ty = m->wy;
@@ -514,7 +514,7 @@ bstackhoriz(Monitor *m) {
 			resize(c, m->wx + mx, m->wy, w - (2 * c->bw), mh - (2 * c->bw), False);
 			mx += WIDTH(c) + gap;
             mfacts -= c->cfact;
-		} 
+		}
 		else {
             h = (m->wh - ty) * (c->cfact / sfacts);
 			resize(c, tx, ty, m->ww - (2 * c->bw), h - (2 * c->bw), False);
@@ -861,7 +861,7 @@ drawbar(Monitor *m) {
         x = m->ww;
     }
 
-    // draw clock 
+    // draw clock
 	if((w = x - xx) > bh) {
         x = xx;
 

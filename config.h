@@ -33,7 +33,7 @@ static const char clock_fmt[]       = "%m/%d/%y @ %I:%M %p";
 
 #define MAX_TAGLEN 16
 #define MONS_TAGGED 3
-#define TAGMON(mon) (mon->num < MONS_TAGGED ? mon->num : MONS_TAGGED-1) 
+#define TAGMON(mon) (mon->num < MONS_TAGGED ? mon->num : MONS_TAGGED-1)
 static char tags[][MONS_TAGGED][MAX_TAGLEN] = {
 	/* monitor 0, monitor 1, monitor 2... */
 	{ "code",     "web",     "chat"  },
@@ -115,7 +115,7 @@ static Key keys[] = {
     { MODKEY,                       XK_period, focusmon,       {.i = +1 } },
     { MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
     { MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
-    { MODKEY|ControlMask,           XK_b,      banishpointer,  {0} }, 
+    { MODKEY|ControlMask,           XK_b,      banishpointer,  {0} },
     { MODKEY|ShiftMask,             XK_n,      nametag,        {0} },
     TAGKEYS(                        XK_1,                      0)
     TAGKEYS(                        XK_2,                      1)
