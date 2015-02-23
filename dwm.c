@@ -1,3 +1,4 @@
+/* vim: set ts=4 sw=4 tw=0 noet : */
 /* See LICENSE file for copyright and license details.
  *
  * dynamic window manager is designed like any other X client as well. It is
