@@ -880,7 +880,7 @@ drawbar(Monitor *m) {
 }
 
 void
-erawbars(void) {
+drawbars(void) {
 	Monitor *m;
 
 	for(m = mons; m; m = m->next)
