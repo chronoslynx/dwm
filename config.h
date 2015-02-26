@@ -36,8 +36,8 @@ static const char clock_fmt[]       = "%m/%d/%y @ %I:%M %p";
 #define TAGMON(mon) (mon->num < MONS_TAGGED ? mon->num : MONS_TAGGED-1)
 static char tags[][MONS_TAGGED][MAX_TAGLEN] = {
 	/* monitor 0, monitor 1, monitor 2... */
-	{ "mail",     "terms",     "code"  },
-	{ "html",     "terms++",   "code++" },
+	{ "comms",     "terms",     "codes"  },
+	{ "webs",     "terms++",   "codes++" },
 };
 
 static const Layout layouts[] = {
@@ -57,7 +57,8 @@ static const Rule rules[] = {
     /* class     instance title tags mask isfloating attachaside, monitor */
     { "Firefox", NULL,    NULL, 1<<1,        False,     False,       0 },
     { "emacs",   NULL,    NULL, NULL,        False,     False,       1},
-    { "Thunderbird", NULL,       NULL,    (1 << 0),     False,    False, 		0 },
+    { "Thunderbird", NULL,NULL, (1 << 0),    False,     False, 	     0 },
+    { "Pidgin",  NULL,    NULL, (1 << 0),    False,     False,       0 },
     { "urxvtc",  NULL,    NULL, NULL,        False,     False,       2},
 };
 
